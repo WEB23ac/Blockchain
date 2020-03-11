@@ -1,6 +1,6 @@
 import hashlib
 import requests
-
+import emoji
 import sys
 import json
 
@@ -83,10 +83,11 @@ if __name__ == '__main__':
         if 'New Block Forged' in data['message']:
             new_block_timestamp = data['new_block']['timestamp']
             production_time = new_block_timestamp - initial_block_timestamp
-
             coins_mined += 1
+            carrot_string = ':carrot:' * coins_mined
             print(
                 f'Carrot Produced in {production_time}! \nIn this session, system has produced {coins_mined} carrot(s).')
+            print(emoji.emojize(carrot_string))
             print('''
                                                    .
                                           */(((/*(/,
