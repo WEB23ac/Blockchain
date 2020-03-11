@@ -144,14 +144,22 @@ def mine():
 
     else:
         proof = data['proof']
-        previous_hash = blockchain.hash(blockchain.last_block)
-        block = blockchain.new_block(proof, previous_hash)
-        response_code = 200
-        response = {
-            'new_block': block,
-            'message': 'New Block Forged'
-        }
+        previous_block = blockchain.last_block
+        previous_block_string = json.dumps(previous_block, sort_keys=True)
 
+        if blockchain.valid_proof(previous_block_string, proof):
+            previous_hash = blockchain.hash(blockchain.last_block)
+            block = blockchain.new_block(proof, previous_hash)
+            response_code = 200
+            response = {
+                'new_block': block,
+                'message': 'New Block Forged'
+            }
+        else:
+            response_code = 400
+            response = {
+                'message': 'Unable to verify proof.'
+            }
     return jsonify(response), response_code
 
 
